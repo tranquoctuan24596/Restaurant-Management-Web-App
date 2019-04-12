@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Cửa hàng Điện thoại</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    .CHON {
+        border: 1px solid blue;
+        opacity: 0.5;
+    }
+</style>
+
+<body>
+    <!-- <div class="container-fluid btn" id="Th_PET">
+
+    </div> -->
+    <div class="container-fluid">
+
+        <div class="float-left">
+            <button type="button" class="btn btn-lg btn-outline-danger" id="Th_CA_PHE">
+                <i class="fa fa-coffee"></i>
+            </button>
+            <button type="button" class="btn btn-lg btn-outline-danger" id="Th_MON_AN">
+                <i class="fa fa-spoon"></i>
+            </button>
+        </div>
+        <div class="float-right">
+            <div class="row">
+                <div class="btn">
+                    <input placeholder="Nhập Tên Món ăn ..." type="text" class="btn btn-outline-danger" style="width:20rem" onkeyup="Tim_Ten_Dien_thoai(event)"
+                        id="Th_Gia_tri_Tim">
+                    <!-- <i class="fa fa-search mr-3" id="Th_Tim"></i> -->
+                </div>
+                <div class="btn">
+                    <select class="btn btn-outline-danger" onchange="Xuat_Dien_thoai_theo_Don_gia(this.value)">
+                            <option value="0-50000">Lọc Món ăn theo Đơn giá Bán</option>
+                            <option value="0-20000">Đơn giá Bán dưới 10 nghìn </option>
+                            <option value="20001-40000">Đơn giá Bán lớn 20 nghìn và nhỏ hơn 40 nghìn </option>
+                            <option value="40001-50000">Đơn giá Bán lớn 40 nghìn </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container-fluid btn clearfix text-right">
+        <button type="button" class="btn btn-outline" id="Th_Tang" onclick="Sap_Tang()">
+            <i class="fa fa-sort-alpha-asc"></i>
+        </button>
+        <button type="button" class="btn btn-outline" id="Th_Giam" onclick="Sap_Giam()">
+            <i class="fa fa-sort-alpha-desc"></i>
+        </button>
+    </div>
+    <div class="container-fluid">
+        <div class="btn btn-outline-danger btn-block" id="Th_Thong_bao">
+            KHUNG THÔNG BÁO
+        </div>
+    </div>
+    <div class="container-fluid">
+        <fieldset class="btn">
+            <legend></legend>
+
+            <div class="row" id="Th_Cha"></div>
+
+        </fieldset>
+
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="../Xu_ly/Xu_ly_3L.js"></script>
+    <script>
+
+        var Du_lieu = Doc_Danh_sach_Dien_thoai();
+        var Danh_sach_Dien_thoai = Du_lieu.Danh_sach_Dien_thoai
+        var Cua_hang = Du_lieu.Cua_hang
+
+        if (Danh_sach_Dien_thoai.length > 0) {
+
+            Xuat_Danh_sach(Danh_sach_Dien_thoai, Th_Thong_bao)
+        }
+        else {
+            Th_Thong_bao.innerHTML = "Lỗi đọc dữ liệu"
+        }
+
+        function Xuat_Danh_sach(Danh_sach_Dien_thoai, Th_thong_bao) {
+            Th_Cha.innerHTML = ""
+            Danh_sach_Dien_thoai.forEach(Dien_thoai => {
+                var The_hien = Tao_The_hien_Dien_thoai(Dien_thoai, Th_Cha)
+                The_hien.onclick = () => {
+                    The_hien.childNodes[0].classList.toggle("CHON")
+                }
+
+            });
+            Th_Thong_bao.innerHTML = `<h3>Danh sách Món ăn (${Danh_sach_Dien_thoai.length}) </h3>`
+        }
+
+
+
+        function Xuat_Dien_thoai_theo_Don_gia(chuoi_dieu_kien) {
+            var Thanh_phan_con = chuoi_dieu_kien.split('-')
+            if (Thanh_phan_con.length > 0) {
+
+                var Danh_sach_Dien_thoai_theo_Gia = Danh_sach_Dien_thoai.filter(x => parseInt(x.Don_gia_Ban) >= parseInt(Thanh_phan_con[0]) && parseInt(x.Don_gia_Ban) <= parseInt(Thanh_phan_con[1]))
+                Xuat_Danh_sach(Danh_sach_Dien_thoai_theo_Gia, Th_Thong_bao)
+            }
+        }
+
+        function Sap_Tang() {
+            // Danh_sach_Dien_thoai.sort((a,b)=>{
+            //     //return a.Don_gia_Ban-b.Don_gia_Ban
+            // })
+            Danh_sach_Dien_thoai.sort((a, b) => a.Ten.localeCompare(b.Ten))
+            Xuat_Danh_sach(Danh_sach_Dien_thoai, Th_Thong_bao)
+        }
+        function Sap_Giam() {
+            // Danh_sach_Dien_thoai.sort((a,b)=>{
+            //     //return b.Don_gia_Ban-a.Don_gia_Ban 
+            // })
+            Danh_sach_Dien_thoai.sort((a, b) => b.Ten.localeCompare(a.Ten))
+            Xuat_Danh_sach(Danh_sach_Dien_thoai, Th_Thong_bao)
+        }
+
+
+
+        Th_CA_PHE.onclick = () => {
+            var Danh_sach_Dien_thoai_theo_Nhom = Danh_sach_Dien_thoai.filter(x => x.Nhom_Mat_hang.Ma_so == "CA_PHE")
+            Xuat_Danh_sach(Danh_sach_Dien_thoai_theo_Nhom, Th_Thong_bao)
+        }
+        Th_MON_AN.onclick = () => {
+            var Danh_sach_Dien_thoai_theo_Nhom = Danh_sach_Dien_thoai.filter(x => x.Nhom_Mat_hang.Ma_so == "MON_AN")
+            Xuat_Danh_sach(Danh_sach_Dien_thoai_theo_Nhom, Th_Thong_bao)
+        }
+
+        function Tim_Ten_Dien_thoai(event) {
+            if (event.keyCode == 13) {
+                var gtTim = event.target.value
+                var Danh_sach_Dien_thoai_tim = Danh_sach_Dien_thoai.filter(x => x.Ten.toLowerCase().includes(gtTim.toLowerCase()))
+                Xuat_Danh_sach(Danh_sach_Dien_thoai_tim, Th_Thong_bao)
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

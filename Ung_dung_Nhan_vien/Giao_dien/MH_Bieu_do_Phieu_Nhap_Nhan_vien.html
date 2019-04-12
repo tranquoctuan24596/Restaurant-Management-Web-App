@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+        crossorigin="anonymous">
+
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="card" style="width:80rem" id="Th_Chart"></div>
+        </div>
+    </div>
+</body>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+<script src="../Xu_ly/Xu_ly_3L.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script>
+    var Du_lieu = Doc_Danh_sach_Dien_thoai()
+    var Nguoi_dung = JSON.parse(sessionStorage.getItem("Nguoi_dung"))
+    var Du_lieu_x = [];
+    var Du_lieu_bao_cao = [];
+    var Danh_sach_Dien_thoai;
+    Danh_sach_Dien_thoai = Du_lieu.Danh_sach_Dien_thoai
+
+    Tao_du_lieu_x()
+    Tao_du_lieu_bao_cao()
+    Tao_Bieu_do_thong_ke_Phieu_nhap()
+
+
+
+    function Tao_du_lieu_x() {
+        Danh_sach_Dien_thoai.forEach(Dien_thoai => {
+            if (Dien_thoai.Danh_sach_Phieu_Nhap.filter(x => x.Nhan_vien.Ma_so == Nguoi_dung.Ma_so).length > 0) {
+                if (Du_lieu_x.indexOf(Dien_thoai.Ten) === -1) {
+                    Du_lieu_x.push(Dien_thoai.Ten)
+                }
+
+            }
+
+        })
+
+    }
+
+    function Tao_du_lieu_bao_cao() {
+
+        var Du_lieu = {}
+        Du_lieu.name = `Nhân viên: ${Nguoi_dung.Ten}`
+        Du_lieu.data = []
+        Du_lieu.color = 'green'
+        Du_lieu_bao_cao.push(Du_lieu);
+        Du_lieu_x.forEach(Ten_hang => {
+
+            var Dien_thoai = Danh_sach_Dien_thoai.find(x => x.Ten == Ten_hang)
+            if (Dien_thoai) {
+
+                var So_luong_Ban = 0;
+
+                Dien_thoai.Danh_sach_Phieu_Nhap.filter(x => x.Nhan_vien.Ma_so == Nguoi_dung.Ma_so).forEach(Phieu => {
+                    So_luong_Ban += parseInt(Phieu.So_luong)
+                })
+                Du_lieu.data.push(So_luong_Ban)
+            }
+
+
+        })
+
+        //console.log(Du_lieu_bao_cao)
+    }
+    function Tao_Bieu_do_thong_ke_Phieu_nhap() {
+        Highcharts.setOptions({
+            lang: {
+                numericSymbols: [' Ngàn', ' Triệu'],
+                numericSymbolMagnitude: 10000,
+                decimalPoint: ',',
+                thousandsSep: '.'
+            },
+            chart: {
+                style: {
+                    fontFamily: 'tahoma',
+                    fontSize: 14
+                }
+            }
+        });
+        Highcharts.chart('Th_Chart', {
+            chart: {
+                type: 'line',
+                plotBorderWidth: 1
+            },
+            title: {
+                text: 'Danh sách Phiếu nhập',
+                style: {
+                    color: 'red',
+                    fontWeight: 'bold',
+                    fontSize: '2rem'
+                }
+            },
+            legend: { layout: 'vertical', align: 'right', verticalAlign: 'middle' },
+            tooltip: {
+                formatter: function () {
+                    return `<b> ${this.series.name} - ${Du_lieu_x[this.point.x]} </b><br/>` +
+                        Highcharts.numberFormat(this.point.y, "") + ' Cái'
+                }
+            },
+
+            xAxis: {
+                categories: Du_lieu_x
+            },
+            yAxis: {
+                title: {
+                    text: 'Số lượng Nhập'
+                }
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.5,
+                    borderWidth: 3
+                }
+            },
+            series: Du_lieu_bao_cao
+        });
+    }
+</script>
+
+</html>

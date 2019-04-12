@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Ứng dụng Khách - Cửa hàng Điện thoại</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/Ung_dung_Khach_hang/nivo-slider/nivo-slider/themes/default/default.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/Ung_dung_Khach_hang/nivo-slider/nivo-slider/themes/light/light.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/Ung_dung_Khach_hang/nivo-slider/nivo-slider/themes/dark/dark.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/Ung_dung_Khach_hang/nivo-slider/nivo-slider/themes/bar/bar.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/Ung_dung_Khach_hang/nivo-slider/nivo-slider/nivo-slider.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="nivo-slider/nivo-slider/demo/style.css" type="text/css" media="screen" />
+    <!-- css cua jquery -->
+</head>
+<style>
+    .CHON {
+        border: 1px solid blue;
+        opacity: 0.5;
+    }
+
+    .slideShow {
+        width: 100%;
+        height: 400px;
+        margin: 0 auto;
+
+    }
+
+    #Th_Thong_bao {
+        margin-top: 250px;
+    }
+
+    .top-first {
+        background-color: #ffcd02;
+        width: 100%;
+        height: 40px;
+    }
+
+    #Th_Dia_diem, #btn_NV, #btn_QL {
+        background-color: #d02128;
+        border: #d02128;
+    }
+
+    .footer {
+        background-color: #ffcd02;
+        height: 300px;
+    }
+
+    .top-first i {
+        color: black;
+        float: right;
+        padding: 10px;
+    }
+</style>
+
+<body id="body">
+    <div class="container-fluid top-first">
+        <i class="fa fa-google-plus"></i>
+        <i class="fa fa-instagram"></i>
+        <i class="fa fa-twitter"></i>
+        <i class="fa fa-facebook"></i>
+    </div>
+    <div class="container-fluid btn" id="Th_PET">
+
+    </div>
+    <div class="container-fluid">
+
+        <div class="float-left">
+            <button type="button" class="btn btn-lg btn-outline-danger" id="Th_Trang_chu">
+                <i class="fa fa-home"></i>
+            </button>
+            <button type="button" class="btn btn-lg btn-outline-danger" id="Th_CA_PHE">
+                <i class="fa fa-coffee"></i>
+            </button>
+            <button type="button" class="btn btn-lg btn-outline-danger" id="Th_MON_AN">
+
+                <i class="fa fa-spoon"></i>
+            </button>
+
+            <button type="button" class="btn btn-lg btn-success" id="Th_Dia_diem">
+                <i class="fa fa-map"></i>
+                Xem Địa điểm Cửa hàng
+            </button>
+            <button type="button" class="btn btn-lg btn-success" id="btn_NV">
+                <a href="../../Ung_dung_Nhan_vien/Giao_dien/MH_Dang_nhap.html" style="color: #fff;text-decoration:none;" target="_blank"> Ứng dụng Nhân viên</a>
+            </button>
+            <button type="button" class="btn btn-lg btn-success" id="btn_QL">
+                <a href="../../Ung_dung_Quan_ly/Giao_dien/MH_Dang_nhap.html" style="color: #fff;text-decoration:none;" target="_blank"> Ứng dụng Quản Lý</a>
+            </button>
+        </div>
+        <div class="float-right">
+            <div class="row">
+                <div class="btn">
+                    <input placeholder="Nhập Tên Mặt hàng ..." type="text" class="btn btn-outline-danger" onkeyup="KeyCode(event)" style="width:20rem"
+                        id="Th_Gia_tri_Tim">
+                    <i class="fa fa-search mr-3" id="Th_Tim"></i>
+                </div>
+                <div class="btn">
+                    <select class="btn btn-outline-danger" onchange="Xuat_Dien_thoai_theo_Don_gia(this.value)">
+                        <option value="0-50000">Lọc Điện thoại theo Đơn giá Bán</option>
+                        <option value="0-20000">Đơn giá Bán dưới 10 nghìn </option>
+                        <option value="20001-40000">Đơn giá Bán lớn 20 nghìn và nhỏ hơn 40 nghìn </option>
+                        <option value="40001-50000">Đơn giá Bán lớn 40 nghìn </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container-fluid btn clearfix text-right">
+        <button type="button" class="btn btn-outline" id="Th_Tang" onclick="Sap_Tang()">
+            <i class="fa fa-sort-alpha-asc"></i>
+        </button>
+        <button type="button" class="btn btn-outline" id="Th_Giam" onclick="Sap_Giam()">
+            <i class="fa fa-sort-alpha-desc"></i>
+        </button>
+    </div>
+
+    <div class="slideShow">
+        <div id="wrapper">
+            <div class="slider-wrapper theme-default">
+                <div id="slider" class="nivoSlider">
+                    <img src="/Ung_dung_Khach_hang/nivo-slider/nivo-slider/demo/images/slider_1.png" alt="" title="Some information" />
+                    <img src="/Ung_dung_Khach_hang/nivo-slider/nivo-slider/demo/images/slider_2.png" alt="" title="Fruit Juice" />
+                    <img src="/Ung_dung_Khach_hang/nivo-slider/nivo-slider/demo/images/slider_3.png" alt="" data-transition="slideInLeft" title="Coffee" />
+                    <img src="/Ung_dung_Khach_hang/nivo-slider/nivo-slider/demo/images/slider_4.png" alt="" title="Hamburger" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="btn btn-outline-danger btn-block" id="Th_Thong_bao">
+            KHUNG THÔNG BÁO
+        </div>
+    </div>
+    <div class="container-fluid">
+        <fieldset class="btn">
+            <legend></legend>
+            <div class="row" style="margin: auto; width: 90%" id="Th_Cha"></div>
+        </fieldset>
+
+    </div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-lg d-none" id="Th_Show" data-toggle="modal" data-target="#modelId">
+        Launch
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-danger" id="modelTitleId"></h4>
+                    <button type="button" id="Th_Close" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+                <div class="modal-body" id="Th_Chi_tiet">
+
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid footer"></div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="../Xu_ly/Xu_ly_3L.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAw3QZ5hhReTIJLSWz7o_582Wm3p6PV-EM&language=vi"></script>
+    <script>
+
+        var Du_lieu = Doc_Danh_sach_Dien_thoai();
+        var Danh_sach_Dien_thoai = Du_lieu.Danh_sach_Dien_thoai
+        var Cua_hang = Du_lieu.Cua_hang
+        var map
+        var geocoder = new google.maps.Geocoder();
+        Xuat_Thong_tin_Cua_hang(Cua_hang, Th_PET)
+        if (Danh_sach_Dien_thoai.length > 0) {
+
+            Xuat_Danh_sach(Danh_sach_Dien_thoai, Th_Thong_bao)
+        }
+        else {
+            Th_Thong_bao.innerHTML = "Lỗi đọc dữ liệu"
+        }
+
+        function Xuat_Danh_sach(Danh_sach_Dien_thoai, Th_thong_bao) {
+            Th_Cha.innerHTML = ""
+            Danh_sach_Dien_thoai.forEach(Dien_thoai => {
+                var The_hien = Tao_The_hien_Dien_thoai(Dien_thoai, Th_Cha)
+                The_hien.childNodes[0].onclick = () => {
+                    //The_hien.childNodes[0].classList.toggle("CHON")
+                    var Dien_thoai = The_hien.childNodes[0].parentNode.getAttribute("data")
+                    sessionStorage.setItem("giohang", Dien_thoai)
+                    window.location = "MH_Gio_hang.html"
+                }
+                The_hien.childNodes[1].onclick = () => {
+                    //console.log(The_hien.childNodes[1].parentNode.getAttribute("data"))
+                    var Dien_thoai_Chon = JSON.parse(The_hien.childNodes[1].parentNode.getAttribute("data"))
+                    var noi_dung_HTML = `
+                        <h4 class="text-primary">${Dien_thoai_Chon.Ten}</h4>
+                        <img src="https://dv--media.herokuapp.com/${Dien_thoai_Chon.Ma_so}.png" />
+                    `
+                    Th_Chi_tiet.innerHTML = noi_dung_HTML
+                    Th_Show.click()
+                }
+
+
+            });
+            Th_Thong_bao.innerHTML = `<h3>Danh sách Điện thoại (${Danh_sach_Dien_thoai.length}) </h3>`
+        }
+
+
+
+        function Xuat_Dien_thoai_theo_Don_gia(chuoi_dieu_kien) {
+            var Thanh_phan_con = chuoi_dieu_kien.split('-')
+            if (Thanh_phan_con.length > 0) {
+
+                var Danh_sach_Dien_thoai_theo_Gia = Danh_sach_Dien_thoai.filter(x => x.Don_gia_Ban >= Thanh_phan_con[0] && x.Don_gia_Ban <= Thanh_phan_con[1])
+                Xuat_Danh_sach(Danh_sach_Dien_thoai_theo_Gia, Th_Thong_bao)
+            }
+        }
+
+        function Sap_Tang() {
+            // Danh_sach_Dien_thoai.sort((a,b)=>{
+            //     //return a.Don_gia_Ban-b.Don_gia_Ban
+            // })
+            Danh_sach_Dien_thoai.sort((a, b) => a.Ten.localeCompare(b.Ten))
+            Xuat_Danh_sach(Danh_sach_Dien_thoai, Th_Thong_bao)
+        }
+        function Sap_Giam() {
+            // Danh_sach_Dien_thoai.sort((a,b)=>{
+            //     //return b.Don_gia_Ban-a.Don_gia_Ban 
+            // })
+            Danh_sach_Dien_thoai.sort((a, b) => b.Ten.localeCompare(a.Ten))
+            Xuat_Danh_sach(Danh_sach_Dien_thoai, Th_Thong_bao)
+        }
+
+
+        Th_Trang_chu.onclick = () => {
+            Xuat_Danh_sach(Danh_sach_Dien_thoai, Th_Thong_bao)
+        }
+        Th_CA_PHE.onclick = () => {
+            var Danh_sach_Dien_thoai_theo_Nhom = Danh_sach_Dien_thoai.filter(x => x.Nhom_Mat_hang.Ma_so == "CA_PHE")
+            Xuat_Danh_sach(Danh_sach_Dien_thoai_theo_Nhom, Th_Thong_bao)
+        }
+        Th_MON_AN.onclick = () => {
+            var Danh_sach_Dien_thoai_theo_Nhom = Danh_sach_Dien_thoai.filter(x => x.Nhom_Mat_hang.Ma_so == "MON_AN")
+            Xuat_Danh_sach(Danh_sach_Dien_thoai_theo_Nhom, Th_Thong_bao)
+        }
+        Th_Tim.onclick = () => {
+            var gtTim = Th_Gia_tri_Tim.value
+            var Danh_sach_Dien_thoai_tim = Danh_sach_Dien_thoai.filter(x => x.Ten.toLowerCase().includes(gtTim.toLowerCase()))
+            Xuat_Danh_sach(Danh_sach_Dien_thoai_tim, Th_Thong_bao)
+            Th_Gia_tri_Tim.value = ""
+        }
+        function KeyCode(event) {
+            if (event.keyCode == 13) {
+                var gtTim = event.target.value
+                var Danh_sach_Dien_thoai_tim = Danh_sach_Dien_thoai.filter(x => x.Ten.toLowerCase().includes(gtTim.toLowerCase()))
+                Xuat_Danh_sach(Danh_sach_Dien_thoai_tim, Th_Thong_bao)
+            }
+        }
+        // Th_Tai_tap_tin.onclick=()=>{
+        //     var tap_tin="Don_Du_tuyen.pdf"
+        //     var ten_moi="Don_Du_tuyen_2018"
+        //     Tai_tap_tin(tap_tin,ten_moi)
+        // }
+        // Th_Nop_don.onclick=()=>{
+        //     Tao_the_hien_Upload(Th_Chi_tiet)
+        //     modelId.setAttribute("data-keyboard",false)
+        //     modelId.setAttribute("data-backdrop","static")
+        //     modelTitleId.innerHTML="Nộp Đơn Dự Tuyển"
+        //     Th_Show.click()
+        // }
+
+        Th_Dia_diem.onclick = () => {
+
+
+            modelId.childNodes[1].setAttribute("style", "max-width:50rem")
+
+            Th_Chi_tiet.style.height = "30rem"
+
+            Hien_thi_vi_tri_Cong_ty(Cua_hang)
+            Th_Show.click()
+        }
+        function Khoi_tao_Ban_do() {
+
+            var latlng = new google.maps.LatLng(10.823099, 106.629664); // Vĩ độ, Kinh độ Tp Hồ Chí Minh
+            var myOptions = {
+                zoom: 16,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                disableDefaultUI: true
+            };
+            map = new google.maps.Map(Th_Chi_tiet, myOptions);
+        }
+
+        function Hien_thi_vi_tri_Cong_ty(Cua_hang) {
+
+            modelTitleId.innerHTML = `${Cua_hang.Ten} - ${Cua_hang.Dien_thoai} `
+            geocoder.geocode({
+                'address': Cua_hang.Dia_chi
+            }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    map.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        title: `${Cua_hang.Ten} - ${Cua_hang.Dien_thoai} `
+                    });
+
+                    if (results[0].formatted_address) {
+                        region = results[0].formatted_address + '<br />';
+                    }
+                    var infowindow = new google.maps.InfoWindow({
+                        content: '<div style =width:500px; height:400px;><h5>' + Cua_hang.Ten + '</h5><br/>Địa chỉ:' + region + '<br/>LatLng:' + results[0].geometry.location + '</div>'
+                    });
+                    infowindow.open(map, marker);
+                    google.maps.event.addListener(marker, 'click', function () {
+                        // Calling the open method of the infoWindow 
+                        infowindow.open(map, marker);
+                    });
+                } else {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            });
+            Khoi_tao_Ban_do()
+        }
+
+
+    </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/Ung_dung_Khach_hang/nivo-slider/nivo-slider/jquery.nivo.slider.js"></script>
+    <script type="text/javascript">
+        $(window).load(function () {
+            $('#slider').nivoSlider();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="container-fluid btn">
+        <div class="float-left">
+            <button type="button" class="btn btn-success" id="Th_Dong_y">
+                Đồng ý
+            </button>
+
+            <button type="button" class="btn btn-danger" id="Th_Bo_qua">
+                Bỏ qua
+            </button>
+
+
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="btn btn-outline-danger btn-block" id="Th_Thong_bao">
+            PHỤC HỒI THANH LÝ ĐIỆN THOẠI
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row" id="Th_Cha">
+
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="../Xu_ly/Xu_ly_3L.js"></script>
+    <script>
+        var Du_lieu = Doc_Danh_sach_Thanh_ly_Dien_thoai();
+        var Danh_sach_Thanh_ly = Du_lieu.Danh_sach_Thanh_ly
+        //console.log(Danh_sach_Thanh_ly)
+        Tao_The_hien_Phuc_hoi(Th_Cha, Danh_sach_Thanh_ly)
+
+        function XL_Phuc_hoi_Dien_thoai() {
+            var Danh_sach_Phuc_hoi = document.querySelectorAll(".PHUC_HOI")
+
+            var Danh_sach = []
+            Danh_sach_Phuc_hoi.forEach(Dien_thoai => {
+                if (Dien_thoai.checked) {
+                    var Ma_so = Dien_thoai.getAttribute("Ma_so")
+                    var Dien_thoai_Phuc_hoi = {
+                        "Ma_so": Ma_so,
+                    }
+                    Danh_sach.push(Dien_thoai_Phuc_hoi)
+                }
+
+            })
+
+            //console.log(Danh_sach)
+            // Ghi Phục hồi  Điện thoai
+            var Kq = Ghi_Phuc_hoi_Dien_thoai(Danh_sach)
+            return Kq
+
+        }
+
+        Th_Dong_y.onclick = () => {
+            var Kq = XL_Phuc_hoi_Dien_thoai()
+            //console.log(Kq)
+            if (Kq == "OK") {
+                Th_Thong_bao.innerHTML = "Phục hồi thành công Điện thoại";
+                sessionStorage.removeItem("Danh_sach_Chon")
+
+            }
+
+        }
+
+        Th_Bo_qua.onclick = () => {
+            window.location = "MH_Danh_sach_Dien_thoai.html"
+        }
+
+    </script>
+</body>
+
+</html>

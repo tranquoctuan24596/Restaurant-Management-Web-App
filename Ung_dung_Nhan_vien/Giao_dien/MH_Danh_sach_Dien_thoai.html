@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Cửa hàng Điện thoại</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    .CHON {
+        border: 1px solid blue;
+        opacity: 0.5;
+    }
+</style>
+
+<body>
+    
+    <div class="container-fluid">
+
+        <div class="float-left">
+            <button type="button" class="btn btn-lg btn-outline-danger" id="Th_Android">
+                <i class="fa fa-android"></i>
+            </button>
+            <button type="button" class="btn btn-lg btn-outline-danger" id="Th_Iphone">
+                <i class="fa fa-apple"></i>
+            </button>
+        </div>
+        <div class="float-right">
+            <div class="row">
+                <div class="btn">
+                    <input placeholder="Nhập Tên Điện thoại ...Enter" type="text" class="btn btn-outline-danger" style="width:20rem" onkeyup="Tim_Ten_Dien_thoai(event)" id="Th_Gia_tri_Tim">
+                    <!-- <i class="fa fa-search mr-3" id="Th_Tim"></i> -->
+                </div>
+                <div class="btn">
+                    <select class="btn btn-outline-danger" onchange="Xuat_Dien_thoai_theo_Don_gia(this.value)">
+                        <option value="0-50000000">Lọc Điện thoại theo Đơn giá Bán</option>
+                        <option value="0-1000000">Đơn giá Bán dưới 1 triệu </option>
+                        <option value="1000000-3000000">Đơn giá Bán lớn 1 triệu và nhỏ 3 triệu </option>
+                        <option value="3000000-50000000">Đơn giá Bán lớn 3 triệu </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container-fluid btn clearfix text-right">
+        <button type="button" class="btn btn-outline" id="Th_Tang" onclick="Sap_Tang()">
+            <i class="fa fa-sort-alpha-asc"></i>
+        </button>
+        <button type="button" class="btn btn-outline" id="Th_Giam" onclick="Sap_Giam()">
+            <i class="fa fa-sort-alpha-desc"></i>
+        </button>
+    </div>
+    <div class="container-fluid">
+        <div class="btn btn-outline-danger btn-block" id="Th_Thong_bao">
+            KHUNG THÔNG BÁO
+        </div>
+    </div>
+    <div class="container-fluid">
+        <fieldset class="btn">
+            <legend></legend>
+
+            <div class="row" id="Th_Cha"></div>
+
+        </fieldset>
+
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="../Xu_ly/Xu_ly_3L.js"></script>
+    <script>
+
+        var Du_lieu = Doc_Danh_sach_Dien_thoai();
+        
+        var Danh_sach_Dien_thoai = Du_lieu.Danh_sach_Dien_thoai
+        
+
+        
+        var Cua_hang = Du_lieu.Cua_hang
+
+        if (Danh_sach_Dien_thoai.length > 0) {
+
+            Xuat_Danh_sach(Danh_sach_Dien_thoai, Th_Thong_bao)
+        }
+        else {
+            Th_Thong_bao.innerHTML = "Lỗi đọc dữ liệu"
+        }
+
+        function Xuat_Danh_sach(Danh_sach_Dien_thoai, Th_thong_bao) {
+            Th_Cha.innerHTML = ""
+            Danh_sach_Dien_thoai.forEach(Dien_thoai => {
+                var The_hien = Tao_The_hien_Dien_thoai(Dien_thoai, Th_Cha)
+                The_hien.onclick = () => {
+                    The_hien.childNodes[0].classList.toggle("CHON")
+                }
+
+            });
+            Th_Thong_bao.innerHTML = `<h3>Danh sách Điện thoại (${Danh_sach_Dien_thoai.length}) </h3>`
+        }
+
+        
+
+        function Xuat_Dien_thoai_theo_Don_gia(chuoi_dieu_kien) {
+            var Thanh_phan_con = chuoi_dieu_kien.split('-')
+            if (Thanh_phan_con.length > 0) {
+
+                var Danh_sach_Dien_thoai_theo_Gia = Danh_sach_Dien_thoai.filter(x => x.Don_gia_Ban >= Thanh_phan_con[0] && x.Don_gia_Ban <= Thanh_phan_con[1])
+                Xuat_Danh_sach(Danh_sach_Dien_thoai_theo_Gia, Th_Thong_bao)
+            }
+        }
+
+        function Sap_Tang() {
+            // Danh_sach_Dien_thoai.sort((a,b)=>{
+            //     //return a.Don_gia_Ban-b.Don_gia_Ban
+            // })
+            Danh_sach_Dien_thoai.sort((a, b) => a.Ten.localeCompare(b.Ten))
+            Xuat_Danh_sach(Danh_sach_Dien_thoai, Th_Thong_bao)
+        }
+        function Sap_Giam() {
+            // Danh_sach_Dien_thoai.sort((a,b)=>{
+            //     //return b.Don_gia_Ban-a.Don_gia_Ban 
+            // })
+            Danh_sach_Dien_thoai.sort((a, b) => b.Ten.localeCompare(a.Ten))
+            Xuat_Danh_sach(Danh_sach_Dien_thoai, Th_Thong_bao)
+        }
+
+
+
+        Th_Android.onclick = () => {
+            var Danh_sach_Dien_thoai_theo_Nhom = Danh_sach_Dien_thoai.filter(x => x.Nhom_Dien_thoai.Ma_so == "ANDROID")
+            Xuat_Danh_sach(Danh_sach_Dien_thoai_theo_Nhom, Th_Thong_bao)
+        }
+        Th_Iphone.onclick = () => {
+            var Danh_sach_Dien_thoai_theo_Nhom = Danh_sach_Dien_thoai.filter(x => x.Nhom_Dien_thoai.Ma_so == "IPHONE")
+            Xuat_Danh_sach(Danh_sach_Dien_thoai_theo_Nhom, Th_Thong_bao)
+        }
+        // Th_Tim.onclick = () => {
+        //     var gtTim = Th_Gia_tri_Tim.value
+        //     var Danh_sach_Dien_thoai_tim = Danh_sach_Dien_thoai.filter(x => x.Ten.toLowerCase().includes(gtTim.toLowerCase()))
+        //     Xuat_Danh_sach(Danh_sach_Dien_thoai_tim, Th_Thong_bao)
+        //     Th_Gia_tri_Tim.value = ""
+        // }
+        function Tim_Ten_Dien_thoai(event) {
+            if (event.keyCode == 13) {
+                var gtTim = event.target.value
+                var Danh_sach_Dien_thoai_tim = Danh_sach_Dien_thoai.filter(x => x.Ten.toLowerCase().includes(gtTim.toLowerCase()))
+                Xuat_Danh_sach(Danh_sach_Dien_thoai_tim, Th_Thong_bao)
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

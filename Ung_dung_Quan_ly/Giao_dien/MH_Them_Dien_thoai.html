@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="container-fluid btn">
+        <div class="float-left">
+            <button type="button" class="btn btn-success" id="Th_Dong_y">
+                Đồng ý
+            </button>
+
+            <button type="button" class="btn btn-danger" id="Th_Bo_qua">
+                Bỏ qua
+            </button>
+
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="btn btn-outline-danger btn-block" id="Th_Thong_bao">
+            THÊM ĐIỆN THOẠI MỚI
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row" id="Th_Cha"></div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="../Xu_ly/Xu_ly_3L.js"></script>
+    <script>
+        var Du_lieu = Doc_Danh_sach_Dien_thoai();
+        var Danh_sach_Dien_thoai = Du_lieu.Danh_sach_Dien_thoai
+        Tao_The_hien_Them_Dien_thoai(Th_Cha)
+        Th_Nhom_Mat_hang.onchange()
+
+        // function XL_Ghi_Media() {
+
+        //     // //console.log(Th_file.files[0])
+        //     var reader = new FileReader()
+        //     var Chuoi_nhi_phan = ""
+        //     var Ten = "temp.png"
+        //     var Kq = ""
+        //     reader.onload = function (e) {
+        //         Chuoi_nhi_phan = e.target.result;
+        //         var Doi_tuong = { "Ten": Ten, "Chuoi_nhi_phan": Chuoi_nhi_phan }
+        //         Kq = Ghi_Media(Doi_tuong)
+        //     }
+        //     reader.readAsDataURL(Th_file.files[0])
+        //     return Kq
+        // }
+        // Xử lý lấy Ma_so
+        function Lay_Ma_so_cuoi() {
+            Nhom_Mat_hang = Th_Nhom_Mat_hang.value;
+            var Danh_sach_Ma_so = []
+            Danh_sach_Dien_thoai.forEach(Dien_thoai => {
+                if (Dien_thoai.Nhom_Mat_hang.Ma_so == Nhom_Mat_hang) {
+                    var Thanh_phan_con = Dien_thoai.Ma_so.trim().split("_")
+                    Danh_sach_Ma_so.push(parseInt(Thanh_phan_con[2]))
+                }
+
+            })
+
+            Danh_sach_Ma_so.sort(function (a, b) {
+                return a - b
+            })
+
+            var Ma_so_Sau_cung = Danh_sach_Ma_so[Danh_sach_Ma_so.length - 1]
+            Ma_so_Sau_cung += 1
+            Th_Ma_so.value = Nhom_Mat_hang + "_" + Ma_so_Sau_cung.toString()
+        }
+
+        // Xử lý Xem trước Media
+        function Xem_truoc_Media() {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                Th_Hinh_Xem_truoc.src = e.target.result;
+                //console.log(e.target.result)
+            }
+            reader.readAsDataURL(Th_file.files[0]);
+
+        }
+        function XL_Ghi_Them() {
+
+            var Ma_so = Th_Ma_so.value
+            var Ten = Th_Ten.value
+            var Don_gia_Nhap = Th_Don_gia_Nhap.value
+            var Don_gia_Ban = Th_Don_gia_Ban.value
+            var Nhom_Mat_hang_Ten = Th_Nhom_Mat_hang.value
+            var Nhom_Mat_hang_Ma_so = Th_Nhom_Mat_hang.value
+            var Dien_thoai = {
+                "Ten": Ten,
+                "Ma_so": Ma_so,
+                "Don_gia_Nhap": Don_gia_Nhap,
+                "Don_gia_Ban": Don_gia_Ban,
+                "Nhom_Mat_hang": {
+                    "Ten": Nhom_Mat_hang_Ten,
+                    "Ma_so": Nhom_Mat_hang_Ma_so
+                },
+                "Danh_sach_Phieu_Dat":[],
+                "Danh_sach_Phieu_Ban":[],
+                "Danh_sach_Phieu_Nhap":[]
+            }
+            // Them Dien thoai
+            var Dien_thoai = Ghi_Dien_thoai_Moi(Dien_thoai)
+            if (Dien_thoai) {
+                Du_lieu.Danh_sach_Dien_thoai.push(Dien_thoai)
+                // // Cập nhật Media
+                var reader = new FileReader()
+                var Chuoi_nhi_phan = ""
+                var Ten_Hinh = `${Ma_so}.png`
+                var Kq = ""
+                reader.onload = function (e) {
+                    Chuoi_nhi_phan = e.target.result;
+                    var Doi_tuong = { "Ten": Ten_Hinh, "Chuoi_nhi_phan": Chuoi_nhi_phan }
+                    Kq = Ghi_Media(Doi_tuong)
+                }
+                reader.readAsDataURL(Th_file.files[0])
+                return Kq
+            }
+
+        }
+
+        Th_Dong_y.onclick = () => {
+            var Kq=XL_Ghi_Them()
+            if(Kq=="OK"){
+                Th_Thong_bao.innerHTML="Thêm thành công Điện thoại mới";
+                
+            }
+        }
+
+        Th_Bo_qua.onclick = () => {
+            window.location = "MH_Danh_sach_Dien_thoai.html"
+        }
+
+    </script>
+</body>
+
+</html>

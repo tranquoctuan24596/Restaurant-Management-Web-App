@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Cửa hàng Điện thoại</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    #Khung_Chuc_nang {
+        width: 100%;
+        height: 1000vh;
+        border: none;
+        overflow: hidden;
+    }
+
+    hr {
+        border: 2px double #d02128;
+    }
+    #Th_Them,#Th_Sua,#Th_Xoa,#Th_Thanh_ly,#Th_Phuc_hoi,#Th_Thong_ke_Nhap_Xuat,#Th_Thong_ke_Doanh_thu
+    {
+        margin-right:5px;
+        margin-left:5px;
+        color:#fff;
+    }
+   
+    .top-first
+    {
+        background-color:#ffcd02 ;  
+        width:100%;
+        height:40px;
+    } 
+    .top-first i
+    {
+        color:black;
+        float:right;
+        padding: 10px;
+    }
+    .footer
+    {
+        background-color:#ffcd02;
+        height:300px;
+    }
+</style>
+
+<body>
+        <div class="container-fluid top-first">
+                <i class="fa fa-google-plus"></i>     
+                <i class="fa fa-instagram"></i>
+                <i class="fa fa-twitter"></i>
+                <i class="fa fa-facebook"></i>  
+        </div>
+    <div class="container-fluid btn" id="Th_Nguoi_dung">
+
+    </div>
+    <div class="container-fluid btn" id="Th_PET">
+
+    </div>
+
+
+
+    <div class="container-fluid btn">
+        <div class="row pl-3">
+            <button type="button" class="btn btn-lg btn-outline-info" id="Th_Trang_chu">
+                <i class="fa fa-home"></i>
+            </button>
+
+            <button type="button" class="btn btn-primary" id="Th_Them"><i class="fa">Thêm</i></button>                
+               
+            
+           
+                <button type="button" class="btn btn-success" id="Th_Sua"> <i class="fa">Sửa</i></button>
+                <button type="button" class="btn btn-danger" id="Th_Xoa"> <i class="fa">Xóa</i></button>
+                <button type="button" class="btn btn-warning" id="Th_Thanh_ly"><i class="fa">Thanh lý</i></button>
+            
+            <button type="button" class="btn btn-info" id="Th_Phuc_hoi"><i class="fa">Phục hồi Thanh lý</i></button>
+
+            
+                    <button type="button" class="btn btn-dark" id="Th_Thong_ke_Nhap_Xuat"><i class="fa">Thống kê Nhập Xuất</i></button>
+                    <button type="button" class="btn btn-dark" id="Th_Thong_ke_Doanh_thu"><i class="fa">Thống kê Doanh thu</i></button>
+           
+        </div>
+    </div>
+    <hr>
+    <div class="container-fluid">
+        <iframe id="Khung_Chuc_nang"></iframe>
+    </div>
+    <div class="container-fluid footer"></div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="../Xu_ly/Xu_ly_3L.js"></script>
+    <script>
+
+        if (!sessionStorage.getItem("Nguoi_dung")) {
+            window.location = "MH_Dang_nhap.html"
+        }
+        var Du_lieu = Doc_Danh_sach_Dien_thoai();
+        var Cua_hang = Du_lieu.Cua_hang
+        Xuat_Thong_tin_Cua_hang(Cua_hang)
+        
+
+        function XL_Thoat_Dang_nhap() {
+            sessionStorage.clear()
+            window.location = "MH_Dang_nhap.html"
+        }
+
+        function Xuat_Thong_tin_Cua_hang(Cua_hang) {
+            Th_PET.innerHTML = `<img src="https://dv--media.herokuapp.com/${Cua_hang.Ma_so}.png" class="float-left" />
+        <h2 class="text-center style="font-size:30px; font-family:Tahoma;font-weight:bold; color:#d02128">${Cua_hang.Ten}
+            <br/>
+            <small style="font-size:30px; font-family:Tahoma;font-weight:bold; color:#d02128"  class="">Địa chỉ: ${Cua_hang.Dia_chi} </br>Điện thoại: ${Cua_hang.Dien_thoai}</small>
+        </h2>`
+            if (sessionStorage.getItem("Nguoi_dung")) {
+                var Kq = JSON.parse(sessionStorage.getItem("Nguoi_dung"))
+                var noi_dung_HTML = `<div class="float-right pr-4">
+                    <img src="https://dv--media.herokuapp.com/${Kq.Ma_so}.png" style="width:5em" class="btn">
+                    <span class="text-primary">Chào  ${Kq.Nhom_Nguoi_dung.Ten} ${Kq.Ten}</span>
+                    <button type="button" class="btn btn-lg btn-outline-danger" id="Th_Thoat" onclick="XL_Thoat_Dang_nhap()">
+                        <i class="fa fa-sign-out"></i>
+                    </button>
+                </div>`
+                Th_Nguoi_dung.innerHTML = noi_dung_HTML
+            }
+
+        }
+        Th_Trang_chu.onclick = () => {
+            var trang = "MH_Danh_sach_Dien_thoai.html"
+            Hien_thi_Trang(trang)
+        }
+        Th_Them.onclick = () => {
+            var trang = "MH_Them_Dien_thoai.html"
+            Hien_thi_Trang(trang)
+
+        }
+        Th_Sua.onclick=()=>{
+            var trang = "MH_Sua_Dien_thoai.html"
+            XL_Danh_sach_Chon(trang)
+        }
+
+        Th_Xoa.onclick=()=>{
+            var trang = "MH_Xoa_Dien_thoai.html"
+            XL_Danh_sach_Chon(trang)
+        }
+        Th_Thanh_ly.onclick=()=>{
+            var trang = "MH_Thanh_ly_Dien_thoai.html"
+            XL_Danh_sach_Chon(trang)
+        }
+        Th_Phuc_hoi.onclick=()=>{
+            var trang = "MH_Phuc_hoi_Dien_thoai.html"
+            Hien_thi_Trang(trang)
+        }
+        Th_Thong_ke_Doanh_thu.onclick=()=>{
+            var trang = "MH_Thong_ke_Doanh_thu.html"
+            Hien_thi_Trang(trang)
+        }
+        Th_Thong_ke_Nhap_Xuat.onclick=()=>{
+            var trang = "MH_Thong_ke_Nhap_Xuat.html"
+            Hien_thi_Trang(trang)
+        }
+        
+        
+        Th_Trang_chu.click()
+        
+        
+        function Hien_thi_Trang(trang_hien_thi) {
+            Khung_Chuc_nang.src = trang_hien_thi
+        }
+
+        function XL_Danh_sach_Chon(trang_hien_thi){
+            //console.log(Khung_Chuc_nang.contentWindow.document.querySelectorAll(".CHON"))
+            var Dien_thoai_Chon=Khung_Chuc_nang.contentWindow.document.querySelectorAll(".CHON")
+            var Danh_sach_Chon=[]
+            Dien_thoai_Chon.forEach(Dien_thoai=>{
+                //console.log(Dien_thoai.parentNode.getAttribute("data"))
+                var thong_tin=JSON.parse(Dien_thoai.parentNode.getAttribute("data"))
+                Danh_sach_Chon.push(thong_tin)
+            })
+            if(Danh_sach_Chon.length>0){
+                var Chuoi_Danh_sach_Chon=JSON.stringify(Danh_sach_Chon)
+                sessionStorage.setItem("Danh_sach_Chon",Chuoi_Danh_sach_Chon)
+                Hien_thi_Trang(trang_hien_thi)
+            }
+        }
+
+
+
+
+
+    </script>
+</body>
+
+</html>

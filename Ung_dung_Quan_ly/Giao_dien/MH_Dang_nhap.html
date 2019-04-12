@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Cửa hàng Điện thoại PET</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="container-fluid btn" id="Th_PET"></div>
+    <div class="container-fluid">
+        <div class="row" id="Th_Cha"></div>
+    </div>
+    <div class="container">
+        <div class="text-center text-danger" id="Th_Thong_bao">
+            KHUNG THÔNG BÁO
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="../Xu_ly/Xu_ly_3L.js"></script>
+    <script>
+        
+        var Du_lieu = Doc_Danh_sach_Dien_thoai();
+        var Cua_hang = Du_lieu.Cua_hang
+        Xuat_Thong_tin_Cua_hang(Cua_hang)
+        
+        if (!sessionStorage.getItem("Nguoi_dung")) {
+            Tao_The_hien_Dang_nhap(Th_Cha)
+            Th_Dang_nhap.onclick = () => {
+                var Thong_tin = {}
+                Thong_tin.Ten_Dang_nhap = Th_Ten_Dang_nhap.value
+                Thong_tin.Mat_khau = Th_Mat_khau.value
+                XL_Dang_nhap(Thong_tin)
+
+            }
+        } else {
+            window.location = 'MH_Chinh.html'
+        }
+        // Xừ lý Đăng nhập:--------------------------------------------------
+        function XL_Dang_nhap(Thong_tin) {
+            var Kq = Dang_nhap_He_thong(Thong_tin)
+            if ("Ma_so" in Kq) {
+                sessionStorage.setItem("Nguoi_dung", JSON.stringify(Kq))
+                window.location = 'MH_Chinh.html'
+            } else {
+                Th_Thong_bao.innerHTML = "Thông tin đăng nhập không hợp lệ ..."
+            }
+        }
+        
+        function Xuat_Thong_tin_Cua_hang(Cua_hang) {
+            Th_PET.innerHTML = `<img src="https://dv--media.herokuapp.com/${Cua_hang.Ma_so}.png" class="float-left" />
+        <h2 class="text-center text-primary">${Cua_hang.Ten}
+            <br/>
+            <small style="font-size:16px" class="text-success"><i>Địa chỉ: ${Cua_hang.Dia_chi} </br>Điện thoại: ${Cua_hang.Dien_thoai}</i></small>
+        </h2>`
+        }
+
+    </script>
+</body>
+</html>

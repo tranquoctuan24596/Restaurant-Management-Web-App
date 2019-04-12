@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Xem Nhập xuất Cửa hàng</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+        crossorigin="anonymous">
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="card" style="width: 80rem" id="Th_Chart"></div>
+        </div>
+    </div>
+</body>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+<script src="../Xu_ly/Xu_ly_3L.js"></script>
+
+<script>
+    var Du_lieu_x = [];
+    var Du_lieu_bao_cao = [];
+    var Danh_sach_Dien_thoai;
+    var Danh_sach_Phieu = [{ 'Ten': "Tổng Nhập" }, { 'Ten': "Tổng Xuất" }];
+    var Du_lieu = Doc_Danh_sach_Dien_thoai();
+    Danh_sach_Dien_thoai = Du_lieu.Danh_sach_Dien_thoai
+    // Tạo dữ liệu x
+    Tao_du_lieu_x()
+    // Tạo dữ liệu báo cáo
+    Tao_du_lieu_bao_cao()
+    //console.log(Du_lieu_bao_cao)
+    // Tạo biểu đồ
+    Tao_Bieu_do_thong_ke_Nhap_Xuat()
+
+    function Tao_du_lieu_x() {
+        Danh_sach_Dien_thoai.forEach(Dien_thoai => {
+            Du_lieu_x.push(Dien_thoai.Ten)
+        })
+
+    }
+
+    function Tao_du_lieu_bao_cao() {
+        Danh_sach_Phieu.forEach((Phieu, index) => {
+            var nv = {}
+            var Tong_Nhap = 0;
+            var Tong_Xuat = 0;
+            nv.name = Phieu.Ten
+            nv.data = []
+
+            if (index == 0) {
+                Danh_sach_Dien_thoai.forEach(Dien_thoai => {
+                    Tong_Nhap = 0
+                    Dien_thoai.Danh_sach_Phieu_Nhap.forEach(Phieu_Nhap => {
+                        Tong_Nhap += Phieu_Nhap.So_luong
+                    })
+                    nv.data.push(Tong_Nhap)
+                })
+                Du_lieu_bao_cao.push(nv);
+            } else {
+                Danh_sach_Dien_thoai.forEach(Dien_thoai => {
+                    Tong_Xuat = 0
+                    Dien_thoai.Danh_sach_Phieu_Ban.forEach(Phieu_Ban => {
+                        Tong_Xuat += parseInt(Phieu_Ban.So_luong)
+                    })
+                    Dien_thoai.Danh_sach_Phieu_Dat.forEach(Phieu_Dat => {
+                        if (Phieu_Dat.Trang_thai == "DA_GIAO_HANG") {
+                            Tong_Xuat += parseInt(Phieu_Dat.So_luong)
+                        }
+
+                    })
+
+                    nv.data.push(Tong_Xuat)
+                })
+                Du_lieu_bao_cao.push(nv);
+            }
+
+        })
+    }
+    function Tao_Bieu_do_thong_ke_Nhap_Xuat() {
+        Highcharts.setOptions({
+            lang: {
+                numericSymbols: [' Ngàn', ' Triệu', 'Tỷ'],
+                numericSymbolMagnitude: 100000000000,
+                decimalPoint: ',',
+                thousandsSep: '.'
+            },
+            chart: {
+                style: {
+                    fontFamily: 'tahoma',
+                    fontSize: 14
+                }
+            }
+        });
+        Highcharts.chart('Th_Chart', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Thống kê Doanh thu',
+                style: {
+                    color: 'red',
+                    fontWeight: 'bold',
+                    fontSize: '2rem'
+                }
+            },
+            legend: { layout: 'vertical', align: 'right', verticalAlign: 'middle' },
+            tooltip: {
+                backgroundColor: '#FCFFC5',
+                borderColor: 'black',
+                borderRadius: 10,
+                borderWidth: 3,
+                formatter: function () {
+                    return `<b> ${this.series.name} - ${Du_lieu_x[this.point.x]} </b><br/>` +
+                        Highcharts.numberFormat(this.point.y, "") + ' Cái'
+                }
+            },
+            subtitle: {
+                text: 'Cửa hàng Điện thoại Thu Trân'
+            },
+            xAxis: {
+                categories: Du_lieu_x
+            },
+            yAxis: {
+                title: {
+                    text: 'Số lượng'
+                }
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.5,
+                    borderWidth: 2
+                }
+            },
+            series: Du_lieu_bao_cao
+        });
+    }
+</script>
+
+</html>
